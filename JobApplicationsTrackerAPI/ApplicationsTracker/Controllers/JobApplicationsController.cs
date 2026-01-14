@@ -73,6 +73,10 @@ namespace ApplicationsTracker.Controllers
         public async Task<IActionResult> UpdateStatus(Guid applicationId, ApplicationStatus status)
         {
             var email = User.FindFirstValue(ClaimTypes.Email)!;
+
+            var applicationById = await _db.JobApplications
+                .FirstOrDefaultAsync(a => a.Id == applicationId);
+
             var application = await _db.JobApplications
                 .Include(a => a.User)
                 .FirstOrDefaultAsync(a => a.Id == applicationId && a.User.Email == email);

@@ -20,8 +20,6 @@ public partial class Program
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
-        builder.Services.AddSwaggerGen();
-
         builder.Services.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -96,6 +94,18 @@ public partial class Program
 
         #endregion
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("FrontendDev", policy =>
+            {
+                policy
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -110,7 +120,7 @@ public partial class Program
 
         app.UseHttpsRedirection();
 
-        app.UseCors("CorsPolicy");
+        app.UseCors("FrontendDev");
 
         app.UseCookiePolicy();
 

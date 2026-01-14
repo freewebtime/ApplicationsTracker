@@ -35,6 +35,17 @@ namespace ApplicationsTracker.Controllers
             });
         }
 
+        [HttpGet("fetch-users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _db.Users.ToArrayAsync();
+
+            return Ok(new
+            {
+                users
+            });
+        }
+
         [HttpPost("register-guest")]
         public async Task<IActionResult> RegisterGuest([FromBody] GuestRegistrationRequestDto request)
         {
