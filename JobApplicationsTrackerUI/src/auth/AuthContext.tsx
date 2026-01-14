@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { setToken, clearToken } from "../api/auth";
+import { setToken, clearToken, getIsAuthenticated } from "../api/auth";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -10,7 +10,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => getIsAuthenticated());
 
   useEffect(() => {
     setIsAuthenticated(isAuthenticated);
@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated: isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

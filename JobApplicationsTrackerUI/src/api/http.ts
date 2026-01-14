@@ -1,7 +1,7 @@
 import { URL_POSTFIX_LOGIN } from "./const";
 import * as auth from "./auth";
 
-export async function apiFetch(url: string, options: RequestInit = {}) {
+export async function apiRequest(url: string, options: RequestInit = {}) {
   const token = auth.getToken();
 
   const headers = {
@@ -20,5 +20,11 @@ export async function apiFetch(url: string, options: RequestInit = {}) {
     throw new Error(`API error: ${res.status}`);
   }
 
-  return res.json();
+  return res;
 }
+
+export async function apiFetch(url: string, options: RequestInit = {}) {
+  const result = await apiRequest(url, options);
+  return result.json();
+}
+
